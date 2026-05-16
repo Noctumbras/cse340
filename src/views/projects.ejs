@@ -4,7 +4,7 @@
         <h2>Upcoming Service Projects</h2>
         <ul>
             <% projects.forEach(project => { %>
-                <li><%= project.date %>: <%= project.title %> (<%= project.name %>)</li>
+                <li><%= project.date.toLocaleDateString() %>: <%= project.title %> (<%= project.name %>)</li>
             <% }); %>
         </ul>
     </main>

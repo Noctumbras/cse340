@@ -38,3 +38,38 @@ VALUES
 (3, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
 (3, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
 (3, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY'));
+
+CREATE TABLE categories (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE project_categories (
+	project_categories_id SERIAL PRIMARY KEY,
+	category_id INT REFERENCES categories(category_id),
+	project_id INT REFERENCES project(project_id)
+);
+
+INSERT INTO categories (name)
+VALUES
+('Neighborhood'),
+('Environmental'),
+('Hungry/Homeless');
+
+INSERT INTO project_categories (category_id, project_id)
+VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(1, 4),
+(2, 5),
+(3, 6),
+(1, 7),
+(2, 8),
+(3, 9),
+(1, 10),
+(2, 11),
+(3, 12),
+(1, 13),
+(2, 14),
+(3, 15);
