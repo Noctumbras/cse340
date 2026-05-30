@@ -64,7 +64,7 @@ body {
 main {
     margin-bottom: 3rem;
 
-    li {
+    li, section {
       
       display: flex;
       flex-wrap: wrap;
@@ -78,6 +78,10 @@ main {
       transition: all 0.2s ease;
       color: #334155;
       font-weight: 500;
+    }
+
+    section {
+        flex-direction: column;
     }
 }
 
