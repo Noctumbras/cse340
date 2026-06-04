@@ -1,7 +1,45 @@
-import { getAllProjects, getUpcomingProjects, getProjectDetails } from '../models/projects.js';
+import { 
+    getAllProjects, 
+    getUpcomingProjects, 
+    getProjectDetails,
+    createProject 
+} from '../models/projects.js';
 import { getAllCategoriesFromProject } from '../models/categories.js';
+import { getAllOrganizations } from '../models/organizations.js';
+import { body, validationResult } from 'express-validator';
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
+
+const projectValidation = [
+    body('title')
+        .trim()
+        .notEmpty()
+        .withMessage('Project title is required')
+        .isLength({ min: 3, max: 200 })
+        .withMessage('Project title must be between 3 and 200 characters'),
+    body('description')
+        .trim()
+        .notEmpty()
+        .withMessage('Project description is required')
+        .isLength({ max: 1000 })
+        .withMessage('Project description cannot exceed 1000 characters'),
+    body('location')
+        .trim()
+        .notEmpty()
+        .withMessage('Project location is required')
+        .isLength({ max: 200 })
+        .withMessage('Project location cannot exceed 200 characters'),
+    body('date')
+        .notEmpty()
+        .withMessage('Project date is required')
+        .isISO8601()
+        .withMessage('Project date must be a valid date format'),
+    body('organizationId')
+        .notEmpty()
+        .withMessage('Organization is required')
+        .isInt()
+        .withMessage('Organization ID must be a valid integer')
+];
 
 const projectsPage = async (req, res) => {
     const upcomingProjects = await getUpcomingProjects(NUMBER_OF_UPCOMING_PROJECTS);
@@ -20,4 +58,31 @@ const projectDetailsPage = async (req, res) => {
     res.render('project', {title, project, categories});
 }
 
-export {projectsPage, projectDetailsPage};
+const newProjectForm = async (req, res) => {
+    const title = 'Add New Organization';
+    const organizations = await getAllOrganizations();
+
+    res.render('new-project', {title, organizations});
+}
+
+const processNewProject = async (req, res) => {
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        // Validation failed - loop through errors
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        // Redirect back to the new organization form
+        return res.redirect('/new-project');
+    }
+
+    const { organizationId, title, description, location, date } = req.body;
+    const projectId = await createProject(organizationId, title, description, location, date);
+
+    req.flash('success', 'Project added successfully!');
+
+    res.redirect(`projects`);
+}
+
+export {projectsPage, projectDetailsPage, newProjectForm, processNewProject, projectValidation};

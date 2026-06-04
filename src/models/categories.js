@@ -63,4 +63,45 @@ const getProjectsByCategory = async(categoryId) => {
     return result.rows.length > 0 ? result.rows : null;
 }
 
-export {getAllCategories, getCategoryById, getAllCategoriesFromProject, getProjectsByCategory}  
+const assignCategoryToProject = async(categoryId, projectId) => {
+    const query = `
+        INSERT INTO project_categories (category_id, project_id)
+        VALUES
+        ($1, $2)
+        RETURNING project_categories_id
+    `;
+
+    const queryParams = [categoryId, projectId];
+    const result = await db.query(query, queryParams);
+
+    if (result.rows.length === 0) {
+        throw new Error('Failed to assign category');
+    }
+
+    if (process.env.ENABLE_SQL_LOGGING === 'true') {
+        console.log('Assigned category to project with ID:', result.rows[0].project_categories_id);
+    }
+
+    return result.rows[0].project_category_id;
+}
+
+const updateCategoryAssignments = async(projectId, categoryIds) => {
+    const deleteQuery = `
+        DELETE FROM project_categories
+        WHERE project_id = $1;
+    `;
+
+    await db.query(deleteQuery, [projectId]);
+
+    for (const id of categoryIds) {
+        await assignCategoryToProject(id, projectId);
+    }
+}
+
+export {
+    getAllCategories, 
+    getCategoryById, 
+    getAllCategoriesFromProject, 
+    getProjectsByCategory,
+    updateCategoryAssignments
+}  
