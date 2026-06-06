@@ -23,21 +23,21 @@ CREATE TABLE project (
 
 INSERT INTO project (organization_id, title, description, location, date)
 VALUES 
-(1, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
-(1, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
-(1, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
-(1, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
-(1, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
-(2, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
-(2, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
-(2, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
-(2, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
-(2, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
-(3, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
-(3, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
-(3, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
-(3, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY')),
-(3, 'placeholder', 'placeholder description', 'placeholder location', TO_DATE('01-01-1990', 'DD/MM/YYYY'));
+(1, 'Bush Trimming', 'Trim bushes around the neighborhood', '101 Real Place Drive', TO_DATE('08-08-2026', 'DD/MM/YYYY')),
+(1, 'Highway Litter Pickup', 'Pick up litter around the highway.', 'That Highway', TO_DATE('09-09-2026', 'DD/MM/YYYY')),
+(1, 'Canned Beans Food Drive', 'A food drive collecting canned beans.', '555 Church Avenue', TO_DATE('10-10-2026', 'DD/MM/YYYY')),
+(1, 'Fence Fixing', 'Fix fences around the neighborhood', '101 Real Place Drive', TO_DATE('11-11-2026', 'DD/MM/YYYY')),
+(1, 'Seagull Cleaning', 'Cleaning oil off of seagulls.', 'Charity Beach', TO_DATE('12-12-2026', 'DD/MM/YYYY')),
+(2, 'Clothing Drive', 'Collecting clothing to donate to the homeless.', '1101 Salvation Road', TO_DATE('13-07-2026', 'DD/MM/YYYY')),
+(2, 'Pet Waste Bins', 'Placing garbage cans for pet waste around the neighborhood.', '102 Fake Place Road', TO_DATE('14-09-2026', 'DD/MM/YYYY')),
+(2, 'Recycling Drive', 'A drive to collect recyclable items.', '303 Waste-Not Avenue', TO_DATE('15-11-2026', 'DD/MM/YYYY')),
+(2, 'Soup Kitchen', 'A soup kitchen running for the whole day.', '405 May Drive', TO_DATE('16-06-2026', 'DD/MM/YYYY')),
+(2, 'Pothole Petitioning', 'Go around collecting signatures for a petition to the city to fix potholes in the neighborhood.', '101 Real Place Drive', TO_DATE('17-09-2026', 'DD/MM/YYYY')),
+(3, 'Electronics Collection', 'Collecting electronic waste to recycle.', '303 Waste-Not Avenue', TO_DATE('18-12-2026', 'DD/MM/YYYY')),
+(3, 'Canned Soup Drive', 'A food drive collecting canned soup.', '555 Church Avenue', TO_DATE('19-08-2026', 'DD/MM/YYYY')),
+(3, 'Tree Trimming', 'Trim tree branches around the neighborhood.', '102 Fake Place Road', TO_DATE('20-12-2026', 'DD/MM/YYYY')),
+(3, 'Trail Litter Pickup', 'Pick up litter around the local walking trail.', '222 Squirrel Road', TO_DATE('21-10-2026', 'DD/MM/YYYY')),
+(3, 'Canned Bread Drive', 'A food drive collecting canned bread.', '555 Church Avenue', TO_DATE('22-08-2026', 'DD/MM/YYYY'));
 
 CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
