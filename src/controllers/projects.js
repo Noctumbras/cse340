@@ -2,7 +2,8 @@ import {
     getAllProjects, 
     getUpcomingProjects, 
     getProjectDetails,
-    createProject 
+    createProject,
+    updateProject
 } from '../models/projects.js';
 import { getAllCategoriesFromProject } from '../models/categories.js';
 import { getAllOrganizations } from '../models/organizations.js';
@@ -65,6 +66,16 @@ const newProjectForm = async (req, res) => {
     res.render('new-project', {title, organizations});
 }
 
+const editProjectForm = async (req, res) => {
+    const projectId = req.params.id;
+    const project = await getProjectDetails(projectId);
+    const organizations = await getAllOrganizations();
+
+    const title = 'Edit Project';
+
+    res.render('edit-project', {title, project, organizations});
+}
+
 const processNewProject = async (req, res) => {
     const results = validationResult(req);
     if (!results.isEmpty()) {
@@ -73,7 +84,7 @@ const processNewProject = async (req, res) => {
             req.flash('error', error.msg);
         });
 
-        // Redirect back to the new organization form
+        // Redirect back to the new project form
         return res.redirect('/new-project');
     }
 
@@ -85,4 +96,34 @@ const processNewProject = async (req, res) => {
     res.redirect(`projects`);
 }
 
-export {projectsPage, projectDetailsPage, newProjectForm, processNewProject, projectValidation};
+const processEditProject = async (req, res) => {
+    const projectId = req.params.id;
+
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        // Validation failed - loop through errors
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        // Redirect back to the edit project form
+        return res.redirect(`/edit-project/${projectId}`);
+    }
+
+    const { organizationId, title, description, location, date } = req.body;
+    await updateProject(organizationId, title, description, location, date, projectId);
+
+    req.flash('success', 'Project edited successfully!');
+
+    res.redirect(`/project/${projectId}`);
+}
+
+export {
+    projectsPage, 
+    projectDetailsPage, 
+    newProjectForm, 
+    processNewProject, 
+    projectValidation,
+    editProjectForm,
+    processEditProject
+};
