@@ -118,11 +118,68 @@ const updateProject = async (organizationId, title, description, location, date,
     return result.rows[0].project_id;
 };
 
+const getProjectsByUserId = async (userId) => {
+    const query = `
+      SELECT
+        users.user_id,
+        project.project_id,
+        organization_id,
+        title,
+        description,
+        location,
+        date
+      FROM public.project
+        JOIN users_projects
+            ON project.project_id = users_projects.project_id
+        JOIN users
+            ON users_projects.user_id = users.user_id
+      WHERE users_projects.user_id = $1;
+    `;
+    
+    const queryParams = [userId];
+    const result = await db.query(query, queryParams);
+    return result.rows;
+};
+
+const addUserToProject = async (userId, projectId) => {
+    const query = `
+      INSERT INTO users_projects (user_id, project_id)
+      VALUES ($1, $2)
+      RETURNING users_projects_id
+    `;
+
+    const queryParams = [userId, projectId];
+    const result = await db.query(query, queryParams);
+
+    if (result.rows.length === 0) {
+        throw new Error('Failed to add user to project');
+    }
+
+    if (process.env.ENABLE_SQL_LOGGING === 'true') {
+        console.log('Added user to project with ID:', result.rows[0].users_projects_id);
+    }
+
+    return result.rows[0].users_projects_id;
+};
+
+const removeUserFromProject = async(userId, projectId) => {
+    const deleteQuery = `
+        DELETE FROM users_projects
+        WHERE user_id = $1 AND project_id = $2;
+    `;
+
+    const queryParams = [userId, projectId];
+    await db.query(deleteQuery, queryParams);
+};
+
 export {
     getAllProjects, 
     getProjectsByOrganizationId, 
     getUpcomingProjects, 
     getProjectDetails,
     createProject,
-    updateProject
+    updateProject,
+    getProjectsByUserId,
+    addUserToProject,
+    removeUserFromProject
 };  

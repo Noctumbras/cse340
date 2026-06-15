@@ -19,7 +19,9 @@ import {
     processNewProject,
     projectValidation,
     editProjectForm,
-    processEditProject
+    processEditProject,
+    processVolunteer,
+    processUnvolunteer
 } from './controllers/projects.js';
 
 import { 
@@ -43,7 +45,8 @@ import {
     requireLogin,
     dashboardPage,
     requireRole,
-    usersPage
+    usersPage,
+    processUnvolunteerDashboard
 } from './controllers/users.js';
 
 import { testErrorPage } from './controllers/errors.js';
@@ -75,6 +78,8 @@ router.post('/new-category', requireRole('admin'), categoryValidation, processNe
 router.get('/new-category', requireRole('admin'), newCategoryForm);
 router.post('/edit-category/:id', requireRole('admin'), categoryValidation, processEditCategory);
 router.get('/edit-category/:id', requireRole('admin'), editCategoryForm);
+router.get('/volunteer/:id', requireLogin, processVolunteer);
+router.get('/unvolunteer/:id', requireLogin, processUnvolunteer);
 
 router.post('/register', processUserRegistrationForm);
 router.get('/register', userRegistrationForm);
@@ -82,6 +87,7 @@ router.post('/login', processLoginForm);
 router.get('/login', loginForm);
 router.get('/logout', processLogout);
 router.get('/dashboard', requireLogin, dashboardPage);
+router.get('/unvolunteerDashboard/:id', requireLogin, processUnvolunteerDashboard);
 router.get('/users', requireRole('admin'), usersPage);
 
 // error-handling routes

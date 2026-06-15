@@ -93,3 +93,9 @@ CREATE TABLE users (
 	role_id INT REFERENCES roles(role_id),
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE users_projects (
+	users_projects_id SERIAL PRIMARY KEY,
+	user_id INT REFERENCES users(user_id),
+	project_id INT REFERENCES project(project_id)
+);

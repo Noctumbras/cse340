@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { createNewUser, authenticateUser, getAllUsers } from '../models/users.js';
+import { getProjectsByUserId, removeUserFromProject } from '../models/projects.js';
 
 const userRegistrationForm = async (req, res) => {
     const title = "Register";
@@ -41,7 +42,7 @@ const processLoginForm = async (req, res) => {
         if (authenticatedUser) {
             req.session.user = authenticatedUser;
             req.flash('success', 'You are now logged in!');
-            console.log(authenticatedUser);
+            //console.log(authenticatedUser);
             res.redirect('/dashboard');
         }
         else {
@@ -80,7 +81,9 @@ const dashboardPage = async (req, res) => {
     const email = user.email;
     const title = 'Dashboard';
 
-    res.render('dashboard', {name, email, title});
+    const userProjects = await getProjectsByUserId(user.user_id) || null;
+
+    res.render('dashboard', {name, email, title, userProjects});
 };
 
 const requireRole = (role) => {
@@ -105,6 +108,22 @@ const usersPage = async (req, res) => {
     res.render('users', {usersList, title});
 }
 
+const processUnvolunteerDashboard = async (req, res) => {
+    const projectId = req.params.id;
+
+    try {
+        const userId = req.session.user.user_id;
+        await removeUserFromProject(userId, projectId);
+    } catch (error) {
+        req.flash('error', 'There was an error removing you from the project.');
+        //console.log(error);
+        return res.redirect(`/dashboard`)
+    }
+
+    req.flash('success', 'Successfully removed you from the project.');
+    res.redirect(`/dashboard`);
+}
+
 export { 
     userRegistrationForm, 
     processUserRegistrationForm, 
@@ -114,5 +133,6 @@ export {
     requireLogin,
     dashboardPage,
     requireRole,
-    usersPage
+    usersPage,
+    processUnvolunteerDashboard
  };

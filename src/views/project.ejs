@@ -16,6 +16,13 @@
         </p>
     </section>
 
+    <% if (user) { %>
+        <% if (userVolunteered) { %>
+            <p><a href="/unvolunteer/<%= project.project_id %>">Remove yourself from this project</a></p>
+        <% } else { %>
+            <p><a href="/volunteer/<%= project.project_id %>">Volunteer for this project</a></p>
+    <% } }%>
+
     <% if (user && user.role_name === 'admin') { %>
         <a href="/assign-categories/<%= project.project_id %>">Edit Categories</a>
         <a href="/edit-project/<%= project.project_id %>">Edit Project</a>

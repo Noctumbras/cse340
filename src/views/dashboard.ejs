@@ -3,9 +3,20 @@
 <main>
     <h1><%= title %></h1>
 
-    <h2>Dashboard</h2>
     <p>Name: <%= name %></p>
     <p>Username: <%= email %></p>
+
+    <h2>Projects</h2>
+    <ul>
+        <% if (userProjects) { %>
+            <% userProjects.forEach(project => { %>
+                <li>
+                    <%= project.date.toLocaleDateString() %>: <%= project.title %>
+                    <a href="/unvolunteerDashboard/<%= project.project_id %>">Remove yourself from this project</a>
+                </li>
+            <% }); %>
+        <% } %>
+    </ul>
 
     <% if (user && user.role_name === 'admin') { %>
         <p><a href="/users">Registered Users</a></p>

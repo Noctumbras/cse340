@@ -50,7 +50,7 @@ const authenticateUser = async(email, password) => {
         return null;
     }
 
-    console.log(user.password_hash);
+    //console.log(user.password_hash);
 
     if (await verifyPassword(password, user.password_hash)) {
         return user;
